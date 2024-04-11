@@ -1,0 +1,36 @@
+
+GET http://localhost:5050/userInf
+Authorization: Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNoYW5obG9uZ2RlcHRyYWkyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoibG9uZ2RlcHRyYWkiLCJpYXQiOjE3MTI4NzAxNDcsImV4cCI6MTcxMjg3MDE3N30.4I0Evqp7Jv79AdNk3WQp4896pKYVw_pC1p5vohMonSY
+
+###
+PUT http://localhost:5050/userInf/update
+Content-Type: application/json
+Authorization: Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNoYW5obG9uZzE3MTAwMkBnbWFpbC5jb20iLCJwYXNzd29yZCI6ImxvbmdkZXB0cmFpIiwiaWF0IjoxNzEyODY4MjgyLCJleHAiOjE3MTI4NjgzMTJ9.qwnPdIXjryEvxXjJwQ_I6NfgAE4fsql4kbgecj0FHZw
+
+{
+  "update": {
+    "phone": 374446661543,
+    "address": "HN"
+  }
+}
+####
+POST http://localhost:5050/signup
+Content-Type: application/json
+
+{
+  "username": "chanhlongdeptrai2@gmail.com",
+  "password": "longdeptrai",
+  "nameaccount": "long17",
+  "phone": 333456789,
+  "address": "TpHCM",
+  "email": "long.nguyen2002043@std.ttu.edu.vn"
+}
+
+###
+POST http://localhost:5050/login
+Content-Type: application/json
+
+{
+  "username": "chanhlongdeptrai2@gmail.com",
+  "password": "longdeptrai"
+}
