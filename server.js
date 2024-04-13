@@ -2,7 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
-import {authenToken} from "./access_token_jwt/authorization.js";
+import {authenToken} from "./access_token_jwt/Authorization.js";
 // import {dataUserForGet} from "./authServer.js";
 import {
     UserAccount,

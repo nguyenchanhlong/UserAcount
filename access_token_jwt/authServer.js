@@ -2,8 +2,8 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
-import {GetUsernameUserPassword} from "./models/UserProperties.js";
-import {accessTokenProperty, getAccessToken} from "./models/AccessTokenProperty.js";
+import {GetUsernameUserPassword} from "../models/UserProperties.js";
+import {accessTokenProperty, getAccessToken} from "../models/AccessTokenProperty.js";
 
 dotenv.config();
 
