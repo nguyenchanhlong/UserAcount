@@ -1,9 +1,9 @@
 
-GET http://localhost:5050/userInf
-Authorization: Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNoYW5obG9uZ2RlcHRyYWkyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoibG9uZ2RlcHRyYWkiLCJpYXQiOjE3MTI4NzAxNDcsImV4cCI6MTcxMjg3MDE3N30.4I0Evqp7Jv79AdNk3WQp4896pKYVw_pC1p5vohMonSY
+GET http://localhost:5000/userInf
+Authorization: Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNoYW5obG9uZ2RlcHRyYWkyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoibG9uZ2RlcHRyYWkiLCJpYXQiOjE3MTMwMjc1NzcsImV4cCI6MTcxMzAzMTE3N30.ddqag9hBzjZVrXiQTI4e094D_FwYtClDWqOYunb5-9w
 
 ###
-PUT http://localhost:5050/userInf/update
+PUT http://localhost:5000/userInf/update
 Content-Type: application/json
 Authorization: Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNoYW5obG9uZzE3MTAwMkBnbWFpbC5jb20iLCJwYXNzd29yZCI6ImxvbmdkZXB0cmFpIiwiaWF0IjoxNzEyODY4MjgyLCJleHAiOjE3MTI4NjgzMTJ9.qwnPdIXjryEvxXjJwQ_I6NfgAE4fsql4kbgecj0FHZw
 
@@ -14,7 +14,7 @@ Authorization: Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImNoYW
   }
 }
 ####
-POST http://localhost:5050/signup
+POST http://localhost:5000/signup
 Content-Type: application/json
 
 {
@@ -27,7 +27,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:5050/login
+POST http://localhost:5500/login
 Content-Type: application/json
 
 {
