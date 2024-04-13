@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
 import {authenToken} from "./access_token_jwt/authorization.js";
+// import {dataUserForGet} from "./authServer.js";
 import {
     UserAccount,
     GetUserAccount,
@@ -10,16 +11,16 @@ import {
     DeleteUserAccount,
     GetUsernameUserPassword
 } from "./models/UserProperties.js";
+import {Buffer} from "buffer";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT_LOCAL || 5000;
+const PORT = process.env.PORT_SERVER;
 const uri = `mongodb://${process.env.HOST}:${process.env.PORT_DB}/${process.env.DB}`;
 
-let dataUserForGet = [];
 let dataUserForUpdate = [];
-
+let dataUserForGet = [];
 app.use(express.json());
 
 app.post('/signup', async (req, res) => {
@@ -37,38 +38,19 @@ app.post('/signup', async (req, res) => {
     }
 });
 
-app.post('/login', (req, res) => {
-    //Authorization
-    const data = req.body;
-    // Check if data is empty or missing username/password
-    if (!data || !data.username || !data.password) {
-        return res.status(400).json({error: 'Invalid request. Username and password are required.'});
-    } else {
-        mongoose.connect(uri).then(async () => {
-            try {
-                const getUserInf = await GetUsernameUserPassword(data.username, data.password);
-                if (!getUserInf) {
-                    res.status(404).json({message: 'User account does not exist!!'})
-                } else {
-                    dataUserForGet.push(data);
-                    const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '30s'});
-                    console.log({data});
-                    res.status(200).json({accessToken});
-                }
-
-            } catch (error) {
-                // console.log('Error', error);
-                res.json({error: "Error", message: error.message})
-            }
-        });
-    }
-});
 
 app.get('/userInf', authenToken, (req, res) => {
-    // console.log(dataUserForGet[0].username)
+    // This is the Username and Password in login when the client create JWT
+    const authorizationHeader = req.headers['authorization'];
+    // [1] mean Payload
+    const token = authorizationHeader.split(' ')[1];
+    // This code make encoded to decode Payload
+    const dataUserPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
+    dataUserForGet.push(dataUserPayload)
+
     mongoose.connect(uri).then(async () => {
         try {
-            const getUser = await GetUserAccount(`${dataUserForGet[dataUserForGet.length -1].username}`);
+            const getUser = await GetUserAccount(`${dataUserForGet[dataUserForGet.length - 1].username}`);
 
             if (getUser === null) {
                 res.status(404).json({message: "User account does not exist!"});
