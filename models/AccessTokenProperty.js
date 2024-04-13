@@ -1,9 +1,18 @@
 import mongoose from 'mongoose';
 
 const propertySchema = new mongoose.Schema({
-    access_token: String
+    accessToken: String
 }, {versionKey: false});
 
-const AccessTokenProperty = mongoose.model('Access_token', propertySchema);
+const accessTokenProperty = mongoose.model('AccessToken', propertySchema);
 
-export default AccessTokenProperty;
+async function getAccessToken(access_token) {
+    try{
+        return await accessTokenProperty.findOne({accessToken: access_token});
+    } catch (error){
+        console.error("Can't find Token:", error);
+        throw error;
+    }
+}
+
+export {accessTokenProperty, getAccessToken};
