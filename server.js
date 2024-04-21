@@ -1,17 +1,13 @@
 import express from 'express';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
 import {authenToken} from "./access_token_jwt/Authorization.js";
-// import {dataUserForGet} from "./authServer.js";
 import {
     UserAccount,
     GetUserAccount,
     UpdateUserAccount,
-    DeleteUserAccount,
-    GetUsernameUserPassword
+    DeleteUserAccount
 } from "./models/UserProperties.js";
-import {Buffer} from "buffer";
 
 dotenv.config();
 
@@ -25,17 +21,19 @@ app.use(express.json());
 
 app.post('/signup', async (req, res) => {
     const dataPost = req.body;
-
-    try {
-        // Create a new instance of the UserAccount model
-        const newUser = new UserAccount(dataPost);
-        // Save the new user to the database
-        await newUser.save();
-        res.status(200).json({message: 'User account created successfully', user: newUser});
-    } catch (error) {
-        // console.error("Error creating user account:", error);
-        res.status(500).json({error: "Error creating user account", message: "User account existed!"});
-    }
+    mongoose.connect(uri).then(async () => {
+        try {
+            // Create a new instance of the UserAccount model
+            const newUser = new UserAccount(dataPost);
+            // Save the new user to the database
+            await newUser.save();
+            res.status(200).json({message: 'User account created successfully', user: newUser});
+        } catch (error) {
+            // console.error("Error creating user account:", error);
+            res.status(500).json({error: "Error creating user account", message: "User account existed!"});
+            throw error;
+        }
+    })
 });
 
 
@@ -60,6 +58,7 @@ app.get('/userInf', authenToken, (req, res) => {
                 res.status(200).json({message: "User account got:", data: getUser});
             }
         } catch (error) {
+            throw error;
         }
     })
 });
@@ -71,10 +70,24 @@ app.put('/userInf/update', authenToken, (req, res) => {
             const updateUserAccount = await UpdateUserAccount(dataUserForUpdate[dataUserForUpdate.length - 1].nameaccount, dataUpdate.update);
             res.status(200).json({message: "Updated success!!", data: updateUserAccount});
         } catch (error) {
-            res.json({error: "Error", massage: error.message});
+            res.json({error: "Error", message: error.message});
+            throw error;
         }
     })
 });
+
+app.delete('/userInf/delete', authenToken, (req, res) => {
+    const dataDeleteNameAccount = req.body.nameaccount;
+    mongoose.connect(uri).then(async () => {
+        try {
+            await DeleteUserAccount(dataDeleteNameAccount);
+            res.status(200).json({message: "Delete success!!!"});
+        } catch (error) {
+            res.json({error: error, message: error.message});
+            throw error;
+        }
+    })
+})
 
 
 app.listen(PORT, () => {
