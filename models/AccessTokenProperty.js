@@ -6,13 +6,14 @@ const propertySchema = new mongoose.Schema({
 
 const accessTokenProperty = mongoose.model('AccessToken', propertySchema);
 
-async function getAccessToken(access_token) {
-    try{
-        return await accessTokenProperty.findOne({accessToken: access_token});
-    } catch (error){
+async function deleteAccessToken(accessTokenReq) {
+    try {
+        return await accessTokenProperty.findOneAndDelete({accessToken: accessTokenReq});
+    } catch (error) {
         console.error("Can't find Token:", error);
         throw error;
     }
 }
 
-export {accessTokenProperty, getAccessToken};
+
+export {accessTokenProperty, deleteAccessToken};
