@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "startServer": "nodemon server",
-    "startAuthServer": "nodemon authServer"
+    "startAuthServer": "nodemon access_token_jwt/authServer"
   },
   "keywords": [],
   "author": "",
@@ -19,10 +19,11 @@
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.0",
+    "mongoose-delete": "^1.0.2",
+    "nodeman": "^1.1.2",
     "nodemon": "^3.1.0"
   },
   "devDependencies": {
-    "nodeman": "^1.1.2",
     "norman": "^0.1.0"
   }
 }
