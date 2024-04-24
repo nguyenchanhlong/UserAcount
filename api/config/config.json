@@ -1,0 +1,9 @@
+{
+  "Authentication": {
+    "ACCESS_TOKEN_SECRET":"jwt",
+    "HOST": "localhost",
+    "PORT_AUTH": 5500,
+    "PORT_DB": 27017,
+    "DB":"test"
+  }
+}

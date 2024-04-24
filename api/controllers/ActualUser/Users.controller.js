@@ -1,23 +1,6 @@
-import mongoose from "mongoose";
-
-// Define the schema
-const userAccountSchema = new mongoose.Schema({
-    username: {type: String, unique: true, index: true},
-    password: String,
-    nameaccount: String,
-    phone: Number,
-    address: String,
-    email: String
-}, {versionKey: false});
-
-// Create the model
-const UserAccount = mongoose.model('User_Account', userAccountSchema);
-
-
-// Function to create user account
-
-
 // Function to get Password and Username
+import {UserAccount} from "../../models/ActualUsers/Information/Users.model.js";
+
 async function GetUsernameUserPassword(username, password) {
     try {
         // Using await to ensure the result is awaited
@@ -66,5 +49,4 @@ async function DeleteUserAccount(nameaccount) {
     }
 }
 
-// Export functions
-export {UserAccount, GetUserAccount, UpdateUserAccount, DeleteUserAccount, GetUsernameUserPassword};
+export {GetUserAccount, UpdateUserAccount, DeleteUserAccount, GetUsernameUserPassword};

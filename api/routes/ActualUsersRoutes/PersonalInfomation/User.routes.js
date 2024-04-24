@@ -1,43 +1,26 @@
-import express from 'express';
-import dotenv from 'dotenv';
+import express from "express";
+import {authenToken} from "../../../controllers/ActualAuthentication/Authorization.controller.js";
 import mongoose from "mongoose";
-import {authenToken} from "./access_token_jwt/Authorization.js";
 import {
-    UserAccount,
+    DeleteUserAccount,
     GetUserAccount,
-    UpdateUserAccount,
-    DeleteUserAccount
-} from "./models/UserProperties.js";
-
-dotenv.config();
-
-const app = express();
-const PORT = process.env.PORT_SERVER;
-const uri = `mongodb://${process.env.HOST}:${process.env.PORT_DB}/${process.env.DB}`;
-
-let dataUserForUpdate = [];
-let dataUserForGet = [];
-app.use(express.json());
-
-app.post('/signup', async (req, res) => {
-    const dataPost = req.body;
-    mongoose.connect(uri).then(async () => {
-        try {
-            // Create a new instance of the UserAccount model
-            const newUser = new UserAccount(dataPost);
-            // Save the new user to the database
-            await newUser.save();
-            res.status(200).json({message: 'User account created successfully', user: newUser});
-        } catch (error) {
-            // console.error("Error creating user account:", error);
-            res.status(500).json({error: "Error creating user account", message: "User account existed!"});
-            throw error;
-        }
-    })
-});
+    UpdateUserAccount
+} from "../../../controllers/ActualUser/Users.controller.js";
+import {host_db, port_db, db} from "../../../config/ReadConfig.js";
 
 
-app.get('/userInf', authenToken, (req, res) => {
+
+
+const uri = `mongodb://${host_db}:${port_db}/${db}`;
+
+
+const dataUserForGet = []
+const dataUserForUpdate = []
+
+const userRouter = express.Router();
+
+userRouter.get('/userInf', authenToken, (req, res) => {
+    console.log(authenToken)
     // This is the Username and Password in login when the client create JWT
     const authorizationHeader = req.headers['authorization'];
     // [1] mean Payload
@@ -63,7 +46,7 @@ app.get('/userInf', authenToken, (req, res) => {
     })
 });
 
-app.put('/userInf/update', authenToken, (req, res) => {
+userRouter.put('/userInf/update', authenToken, (req, res) => {
     const dataUpdate = req.body;
     mongoose.connect(uri).then(async () => {
         try {
@@ -76,7 +59,7 @@ app.put('/userInf/update', authenToken, (req, res) => {
     })
 });
 
-app.delete('/userInf/delete', authenToken, (req, res) => {
+userRouter.delete('/userInf/delete', authenToken, (req, res) => {
     const dataDeleteNameAccount = req.body.nameaccount;
     mongoose.connect(uri).then(async () => {
         try {
@@ -89,7 +72,4 @@ app.delete('/userInf/delete', authenToken, (req, res) => {
     })
 })
 
-
-app.listen(PORT, () => {
-    console.log(`Server is running on PORT ${PORT}`);
-});
+export {userRouter}
