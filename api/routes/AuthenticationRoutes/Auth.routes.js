@@ -1,18 +1,34 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import mongoose from "mongoose";
-import {GetUsernameUserPassword} from "../models/UserProperties.js";
-import {accessTokenProperty, deleteAccessToken} from "../models/AccessTokenProperty.js";
+import {UserAccount} from "../../models/ActualUsers/Information/Users.model.js";
+import {GetUsernameUserPassword} from "../../controllers/ActualUser/Users.controller.js"
+import {accessTokenProperty, deleteAccessToken} from "../../models/AccessToken/AccessTokenProperty.js";
+import {port_auth, host_db, port_db, db, access_token_secret} from "../../config/ReadConfig.js";
 
-dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT_AUTH;
-const uri = `mongodb://${process.env.HOST}:${process.env.PORT_DB}/${process.env.DB}`;
+const PORT = port_auth || 5500;
+const uri = `mongodb://${host_db}:${port_db}/${db}`;
+
 
 app.use(express.json());
-
+app.post('/signup', async (req, res) => {
+    const dataPost = req.body;
+    mongoose.connect(uri).then(async () => {
+        try {
+            // Create a new instance of the UserAccount model
+            const newUser = new UserAccount(dataPost);
+            // Save the new user to the database
+            await newUser.save();
+            res.status(200).json({message: 'User account created successfully', user: newUser});
+        } catch (error) {
+            // console.error("Error creating user account:", error);
+            res.status(500).json({error: "Error creating user account", message: "User account existed!"});
+            throw error;
+        }
+    })
+});
 
 app.post('/logout', async (req, res) => {
     const accessTokenReq = req.body.token;
@@ -39,7 +55,7 @@ app.post('/login', (req, res) => {
                 if (!getUserInf) {
                     res.status(404).json({message: 'User account does not exist!!'})
                 } else {
-                    const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET);
+                    const accessToken = jwt.sign(data, access_token_secret, {expiresIn: '1d'});
 
                     const accessTokenObject = new accessTokenProperty({accessToken: accessToken}); // Create an object with the access token
                     res.status(200).json({message: "Login success!!!", accessToken: accessToken});
